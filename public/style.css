@@ -1,0 +1,190 @@
+/* solstyle/backend/public/styles.css */
+
+/* --- General Reset & Layout --- */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+main {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align content to the top */
+    padding-top: 50px;
+}
+a {
+    color: #0070c9;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* --- Header Styling --- */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 10%;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.logo {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+.main-header nav a {
+    margin-left: 20px;
+    color: #333;
+    font-weight: 500;
+}
+.main-header nav a.active {
+    color: #000;
+    font-weight: bold;
+    border-bottom: 2px solid black;
+}
+
+/* --- Sign Up Box Styling --- */
+.signup-box {
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+}
+.signup-box h1 {
+    font-size: 1.8em;
+    margin-bottom: 5px;
+}
+.subtitle {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+/* --- Social Login Buttons --- */
+.social-login {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.social-login button {
+    width: 48%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9em;
+}
+.social-login button img {
+    height: 18px;
+    margin-right: 10px;
+}
+.separator {
+    text-align: center;
+    margin: 20px 0;
+    position: relative;
+    color: #999;
+}
+.separator::before, .separator::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: #eee;
+}
+.separator::before { left: 0; }
+.separator::after { right: 0; }
+
+/* --- Form Styling --- */
+.auth-form {
+    text-align: left;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+.name-fields {
+    display: flex;
+    gap: 4%;
+}
+.name-fields .form-group {
+    width: 48%;
+}
+
+.password-hint {
+    font-size: 0.8em;
+    color: #a00; /* Red for emphasis, matching the image */
+    margin-top: 5px;
+    display: block;
+}
+.terms {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.terms input {
+    margin-right: 10px;
+}
+.create-account-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+}
+.login-prompt {
+    margin-top: 20px;
+    color: #666;
+}
+
+/* --- Footer Styling --- */
+.main-footer {
+    background-color: white;
+    padding: 40px 10%;
+    border-top: 1px solid #eee;
+    margin-top: 50px;
+}
+.footer-sections {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+.footer-sections h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1em;
+}
+.footer-sections a {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9em;
+    color: #666;
+}
+.copyright {
+    font-size: 0.8em;
+    color: #999;
+}
