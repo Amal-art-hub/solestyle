@@ -1,0 +1,63 @@
+<%- include('./partials/header.ejs', { title: 'Login | SoleStyle' }) %>
+
+<div class="auth-page">
+    <div class="auth-container">
+        <div class="auth-image-box">
+            <img src="/images/white_shoe.jpg" alt="White leather sneaker with blue accent" class="auth-shoe-image">
+        </div>
+        
+        <div class="auth-form-box">
+            <h2>Welcome Back</h2>
+            <p class="auth-subtitle">Log in to your account to continue.</p>
+
+            <p class="feedback-message"></p> 
+
+            <form action="/api/auth/login" method="POST" class="auth-form" id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group password-group">
+                    <label for="password">Password</label>
+                    <a href="/forgot-password" class="forgot-password-link">Forgot Password?</a>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <span class="password-toggle" data-target="password">
+                         <img src="/images/eye_icon.svg" alt="Show Password" class="eye-icon"> </span> 
+                </div>
+
+                <button type="submit" class="auth-btn login-btn">Login</button>
+            </form>
+
+            <div class="or-divider">
+                <hr>
+                <span>OR</span>
+                <hr>
+            </div>
+            
+            <button class="auth-btn google-btn continue-google-btn">
+                <img src="/images/google_icon.svg" alt="Google Icon">
+                Continue with Google
+            </button>
+
+            <p class="signup-link-text">
+                New to SoleStyle? <a href="/signup" class="create-account-link">Create an account</a>
+            </p>
+
+            <div class="social-login-row">
+                <a href="/auth/google" class="social-icon-btn">
+                    <img src="/images/google_icon.svg" alt="Google Logo">
+                    <span>Sign up with Google</span>
+                </a>
+                <a href="/auth/facebook" class="social-icon-btn">
+                    <img src="/images/facebook_icon.svg" alt="Facebook Logo">
+                    <span>Sign up with Facebook</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/login.js"></script>
+
+<%- include('./partials/footer.ejs') %>

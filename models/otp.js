@@ -1,29 +1,28 @@
 // models/otp.js
+
 import mongoose from 'mongoose';
 
 const otpSchema = mongoose.Schema(
-  {
-    email: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    // Corresponds to 'code' in your diagram. Storing as String is best practice.
-    otp: { 
-      type: String,
-      required: true,
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-      // Sets up a TTL (Time To Live) index: document expires after 10 minutes
-      expires: 60 * 10,
-    },
-  },
-  {
-    timestamps: true, // Includes updatedAt (though often less relevant for temporary OTPs)
-  }
+    {
+        email: {
+            type: String,
+            required: true,
+            trim: true,
+            lowercase: true,
+        },
+        otp: {
+            type: String,
+            required: true,
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+        },
+    }
 );
+
+// TTL index – auto delete after 10 mins
+otpSchema.index({ createdAt: 1 }, { expireAfterSeconds: 600 });
 
 const OTP = mongoose.model('OTP', otpSchema);
 

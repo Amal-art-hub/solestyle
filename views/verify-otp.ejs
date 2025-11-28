@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #fff;
+            padding: 15px 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff; /* Adjust primary brand color */
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 30px; /* Adjust logo size */
+            margin-right: 10px;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .header-icons {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-icons .icon {
+            margin-left: 20px;
+            font-size: 20px;
+            color: #555;
+            text-decoration: none;
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .verify-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .verify-container h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .verify-container p {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .verify-container .email-display {
+            font-weight: bold;
+            color: #007bff; /* Primary color */
+        }
+
+        .otp-input-group {
+            margin-bottom: 25px;
+        }
+
+        .otp-input-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .otp-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 20px;
+            text-align: center;
+            letter-spacing: 5px; /* Spacing out the OTP digits */
+            outline: none;
+        }
+
+        .otp-input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+        }
+
+        .btn-verify, .btn-resend, .btn-back-to-login {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-verify {
+            background-color: #007bff; /* Primary button color */
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .btn-verify:hover {
+            background-color: #0056b3;
+        }
+
+        .action-links {
+            margin-top: 20px;
+        }
+
+        .action-links a {
+            display: inline-block;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .action-links a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        .feedback-message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        footer {
+            background-color: #fff;
+            padding: 40px;
+            margin-top: 40px;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.03);
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            border-top: 1px solid #eee;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 180px;
+            margin: 20px;
+        }
+
+        .footer-section h4 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            text-decoration: none;
+            color: #666;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: #007bff;
+        }
+
+        .footer-bottom {
+            width: 100%;
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid #eee;
+            margin-top: 20px;
+            color: #888;
+            font-size: 14px;
+        }
+        .footer-bottom a {
+             color: #888;
+             text-decoration: none;
+             margin: 0 10px;
+        }
+        .footer-bottom a:hover {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">
+            <img src="/images/logo.png" alt="SoleStyle Logo"> SoleStyle
+        </a>
+        <nav>
+            <ul>
+                <li><a href="/men">Men</a></li>
+                <li><a href="/women">Women</a></li>
+                <li><a href="/kids">Kids</a></li>
+            </ul>
+        </nav>
+        <div class="header-icons">
+            <a href="/search" class="icon">🔍</a> <a href="/cart" class="icon">🛒</a> <a href="/profile" class="icon">✉️</a> </div>
+    </header>
+
+    <main>
+        <div class="verify-container">
+            <h2>Check Your Email</h2>
+            <p>We've sent a One-Time Password (OTP) to your email address. Please enter it below to verify your account <span class="email-display"><%= email %></span>.</p>
+            
+            <div id="messageContainer" class="feedback-message">
+                <% if (error) { %>
+                    <p class="error-message"><%= error %></p>
+                <% } %>
+            </div>
+
+            <form id="verifyOtpForm">
+                <div class="otp-input-group">
+                    <label for="otp">One-Time Password (OTP)</label>
+                    <input type="text" id="otp" name="otp" class="otp-input" placeholder="------" maxlength="6" pattern="\d{6}" required>
+                </div>
+                <button type="submit" class="btn-verify">Verify OTP</button>
+            </form>
+
+            <div class="action-links">
+                <a href="#" id="resendOtpLink" class="btn-resend">Didn't receive the email? Resend OTP</a>
+                <span>|</span>
+                <a href="/login" class="btn-back-to-login">Back to Login</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-section">
+            <h4>Resources</h4>
+            <ul>
+                <li><a href="/find-store">Find A Store</a></li>
+                <li><a href="/become-member">Become A Member</a></li>
+                <li><a href="/about-us">About us</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Help</h4>
+            <ul>
+                <li><a href="/help">Get Help</a></li>
+                <li><a href="/order-status">Order Status</a></li>
+                <li><a href="/delivery">Delivery</a></li>
+                <li><a href="/returns">Returns</a></li>
+                <li><a href="/contact">Contact Us</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Company</h4>
+            <ul>
+                <li><a href="/about-solestyle">About SoleStyle</a></li>
+                <li><a href="/news">News</a></li>
+                <li><a href="/careers">Careers</a></li>
+            </ul>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 SoleStyle, Inc. All rights reserved</p>
+            <a href="/guides">Guides</a>
+            <a href="/terms">Terms of Sale</a>
+            <a href="/terms">Terms of Use</a>
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/settings">Privacy Settings</a>
+        </div>
+    </footer>
+
+    <script>
+        // --- Client-side JavaScript for OTP verification and Resend ---
+
+        const email = "<%= email %>"; // Get email passed from the server
+        const messageContainer = document.getElementById('messageContainer');
+        const verifyOtpForm = document.getElementById('verifyOtpForm');
+        const resendOtpLink = document.getElementById('resendOtpLink');
+        const otpInput = document.getElementById('otp');
+        const API_URL = "/api/auth"; // Base API URL
+
+        // Function to display messages
+        function displayMessage(message, type) {
+            messageContainer.innerHTML = `<p class="${type}-message">${message}</p>`;
+            messageContainer.className = `feedback-message ${type}-message`;
+        }
+
+        // 1. Handle OTP Verification Form Submission
+        if (verifyOtpForm) {
+            verifyOtpForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                messageContainer.innerHTML = ''; // Clear previous messages
+
+                const otp = otpInput.value;
+
+                if (!otp || otp.length !== 6 || !/^\d+$/.test(otp)) {
+                    displayMessage('Please enter a valid 6-digit OTP.', 'error');
+                    return;
+                }
+
+                displayMessage('Verifying OTP...', 'success'); // Using success for processing
+                
+                try {
+                    const response = await fetch(API_URL + '/verify-otp', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, otp }),
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        displayMessage(data.message || 'Account successfully verified!', 'success');
+                        // Store token (if any) and redirect to login or dashboard
+                        if (data.token) {
+                            localStorage.setItem('jwtToken', data.token); // Store token
+                        }
+                        setTimeout(() => {
+                            window.location.href = `/login?success=${encodeURIComponent('Account verified! Please log in.')}`;
+                        }, 2000);
+                    } else {
+                        displayMessage(data.message || 'OTP verification failed.', 'error');
+                    }
+
+                } catch (error) {
+                    console.error('Error during OTP verification:', error);
+                    displayMessage('A network error occurred during verification.', 'error');
+                }
+            });
+        }
+
+        // 2. Handle Resend OTP Link Click
+        if (resendOtpLink) {
+            resendOtpLink.addEventListener('click', async function(e) {
+                e.preventDefault();
+                messageContainer.innerHTML = ''; // Clear previous messages
+                
+                displayMessage('Sending new OTP...', 'success'); // Using success for processing
+
+                try {
+                    const response = await fetch(API_URL + '/send-otp', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email }),
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        displayMessage(data.message || 'New OTP sent successfully!', 'success');
+                    } else {
+                        displayMessage(data.message || 'Failed to resend OTP.', 'error');
+                    }
+
+                } catch (error) {
+                    console.error('Error during OTP resend:', error);
+                    displayMessage('A network error occurred while resending OTP.', 'error');
+                }
+            });
+        }
+
+        // Auto-focus on OTP input
+        otpInput.focus();
+    </script>
+</body>
+</html>

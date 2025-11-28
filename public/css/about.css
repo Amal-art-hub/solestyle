@@ -1,0 +1,196 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #222;
+}
+
+/* NAVBAR STYLES (shared with home page) */
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.nav-left a {
+  text-decoration: none;
+  color: #222;
+  font-weight: 500;
+}
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+  color: #2e5bff;
+}
+.search-box input {
+  padding: 8px 12px;
+  width: 220px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+.nav-icons i {
+  margin-left: 15px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* HERO */
+
+.hero {
+    background: url('/images/about-hero.jpg') center/cover no-repeat;
+    padding: 140px 20px;
+    text-align: center;
+    color: #fff;
+}
+
+.hero h1 {
+    font-size: 48px;
+    font-weight: 700;
+}
+
+.hero p {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+/* MISSION SECTION */
+.mission {
+    display: flex;
+    justify-content: space-between;
+    padding: 80px 10%;
+    gap: 40px;
+}
+
+.mission-left {
+    flex: 1;
+}
+
+.mission-left h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.mission-left ul {
+    margin-top: 25px;
+}
+
+.mission-left ul li {
+    margin-bottom: 15px;
+}
+
+.mission-img img {
+    width: 450px;
+    height: auto;
+    border-radius: 12px;
+}
+
+/* JOURNEY TIMELINE */
+.journey {
+    text-align: center;
+    padding: 80px 10%;
+    background: #f7f7f7;
+}
+
+.timeline {
+    margin-top: 40px;
+    position: relative;
+}
+
+.timeline::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    width: 3px;
+    height: 100%;
+    background: #e0e0e0;
+}
+
+.card {
+    width: 45%;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 40px 0;
+    position: relative;
+}
+
+.left { float: left; text-align: left; }
+.right { float: right; text-align: left; }
+
+.date {
+    color: #c57a30;
+    font-size: 12px;
+    font-weight: bold;
+    display: block;
+}
+
+/* TEAM SECTION */
+.team {
+    text-align: center;
+    padding: 80px 10%;
+}
+
+.team-grid {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.member img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+.member h4 {
+    margin: 10px 0 5px;
+}
+
+/* EXPERIENCE */
+.experience {
+    text-align: center;
+    padding: 100px 20px;
+    background: linear-gradient(to bottom right, #222, #000);
+    color: #fff;
+}
+
+.shop-btn {
+    padding: 12px 25px;
+    background: #e38a2f;
+    border: none;
+    border-radius: 6px;
+    margin-top: 20px;
+    cursor: pointer;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* FOOTER */
+footer {
+    padding: 60px 10%;
+    background: #f7f7f7;
+}
+
+.footer-grid {
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-bottom {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #777;
+}

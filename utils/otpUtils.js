@@ -50,12 +50,15 @@ export const sendOTP = async (email, otp) => {
     };
 
     // 3. Send the email
+    console.log("----------------------------------------------------");
+    console.log("GENERATED OTP FOR " + email + ": " + otp);
+    console.log("----------------------------------------------------");
     await transporter.sendMail(mailOptions);
     console.log(`Email sent successfully to ${email}`);
 
   } catch (error) {
     console.error('Error sending OTP email:', error.message);
     // Depending on your error handling, you might want to re-throw the error
-    throw new Error('Failed to send verification email.'); 
+    throw new Error('Failed to send verification email.');
   }
 };

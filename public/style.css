@@ -1,11 +1,44 @@
 /* solstyle/backend/public/styles.css */
 
+/* --- CSS Variables --- */
+:root {
+    --bg-color: #f4f4f4;
+    --text-color: #333;
+    --header-bg: white;
+    --card-bg: white;
+    --link-color: #0070c9;
+    --border-color: #ddd;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --button-bg: #0056b3;
+    --button-text: white;
+    --secondary-text: #666;
+    --input-bg: white;
+    --input-border: #ccc;
+}
+
+.dark-mode {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --header-bg: #1e1e1e;
+    --card-bg: #1e1e1e;
+    --link-color: #4da3ff;
+    --border-color: #333;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    --button-bg: #0056b3; /* Keep brand color or adjust slightly */
+    --button-text: white;
+    --secondary-text: #aaa;
+    --input-bg: #2c2c2c;
+    --input-border: #444;
+}
+
 /* --- General Reset & Layout --- */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
 }
 main {
     min-height: 80vh;
@@ -15,7 +48,7 @@ main {
     padding-top: 50px;
 }
 a {
-    color: #0070c9;
+    color: var(--link-color);
     text-decoration: none;
 }
 a:hover {
@@ -28,40 +61,44 @@ a:hover {
     justify-content: space-between;
     align-items: center;
     padding: 15px 10%;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    background-color: var(--header-bg);
+    box-shadow: 0 2px 4px var(--shadow-color);
+    transition: background-color 0.3s;
 }
 .logo {
     font-weight: bold;
     font-size: 1.5em;
+    color: var(--text-color);
 }
 .main-header nav a {
     margin-left: 20px;
-    color: #333;
+    color: var(--text-color);
     font-weight: 500;
 }
 .main-header nav a.active {
-    color: #000;
+    color: var(--text-color);
     font-weight: bold;
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid var(--text-color);
 }
 
 /* --- Sign Up Box Styling --- */
 .signup-box {
-    background: white;
+    background: var(--card-bg);
     padding: 40px;
     border-radius: 8px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 20px var(--shadow-color);
     max-width: 500px;
     width: 100%;
     text-align: center;
+    transition: background-color 0.3s;
 }
 .signup-box h1 {
     font-size: 1.8em;
     margin-bottom: 5px;
+    color: var(--text-color);
 }
 .subtitle {
-    color: #666;
+    color: var(--secondary-text);
     margin-bottom: 25px;
 }
 
@@ -74,8 +111,9 @@ a:hover {
 .social-login button {
     width: 48%;
     padding: 10px;
-    border: 1px solid #ddd;
-    background: white;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    color: var(--text-color);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -90,7 +128,7 @@ a:hover {
     text-align: center;
     margin: 20px 0;
     position: relative;
-    color: #999;
+    color: var(--secondary-text);
 }
 .separator::before, .separator::after {
     content: '';
@@ -98,7 +136,7 @@ a:hover {
     top: 50%;
     width: 40%;
     height: 1px;
-    background: #eee;
+    background: var(--border-color);
 }
 .separator::before { left: 0; }
 .separator::after { right: 0; }
@@ -115,13 +153,43 @@ a:hover {
     margin-bottom: 5px;
     font-weight: bold;
     font-size: 0.9em;
+    color: var(--text-color);
 }
 .form-group input {
     width: 100%;
     padding: 12px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--input-border);
     border-radius: 4px;
     box-sizing: border-box;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+/* Password toggle styles */
+.password-field {
+    position: relative;
+}
+
+.password-field input {
+    padding-right: 44px; /* space for the toggle */
+}
+
+.password-toggle {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    padding: 6px;
+    color: var(--text-color);
+}
+
+.password-toggle:focus {
+    outline: none;
 }
 .name-fields {
     display: flex;
@@ -141,6 +209,7 @@ a:hover {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    color: var(--text-color);
 }
 .terms input {
     margin-right: 10px;
@@ -148,8 +217,8 @@ a:hover {
 .create-account-btn {
     width: 100%;
     padding: 12px;
-    background-color: #0056b3;
-    color: white;
+    background-color: var(--button-bg);
+    color: var(--button-text);
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -158,15 +227,16 @@ a:hover {
 }
 .login-prompt {
     margin-top: 20px;
-    color: #666;
+    color: var(--secondary-text);
 }
 
 /* --- Footer Styling --- */
 .main-footer {
-    background-color: white;
+    background-color: var(--header-bg);
     padding: 40px 10%;
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--border-color);
     margin-top: 50px;
+    transition: background-color 0.3s;
 }
 .footer-sections {
     display: flex;
@@ -177,14 +247,30 @@ a:hover {
     margin-top: 0;
     margin-bottom: 15px;
     font-size: 1em;
+    color: var(--text-color);
 }
 .footer-sections a {
     display: block;
     margin-bottom: 8px;
     font-size: 0.9em;
-    color: #666;
+    color: var(--secondary-text);
 }
 .copyright {
     font-size: 0.8em;
-    color: #999;
+    color: var(--secondary-text);
+}
+
+/* Toggle Button Style */
+.theme-toggle-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 20px;
+    font-size: 0.9em;
+}
+.theme-toggle-btn:hover {
+    background-color: var(--border-color);
 }

@@ -16,7 +16,7 @@ const userSchema = mongoose.Schema(
       trim: true,
     },
     // Corresponds to 'passwordHash' in your diagram
-    password: { 
+    password: {
       type: String,
       required: true,
     },
@@ -30,12 +30,12 @@ const userSchema = mongoose.Schema(
       default: false,
     },
     // Used for administrative blocking as per your model
-    isBlock: { 
+    isBlock: {
       type: Boolean,
       default: false,
     },
     // Array of ObjectIds linking to the Address collection
-    address_ids: [ 
+    address_ids: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Address',
@@ -48,15 +48,20 @@ const userSchema = mongoose.Schema(
 );
 
 // Middleware to hash the password before saving (e.g., on user registration or password update)
-userSchema.pre('save', async function (next) {
+// NOTE: Async functions in Mongoose middleware should NOT call next()
+userSchema.pre('save', async function () {
+  console.log("PRE-SAVE: Starting password hash middleware");
   // Only hash the password if it has been modified (or is new)
   if (!this.isModified('password')) {
-    return next();
+    console.log("PRE-SAVE: Password not modified, skipping hash");
+    return;
   }
-  
+
+  console.log("PRE-SAVE: Generating salt...");
   const salt = await bcrypt.genSalt(10);
+  console.log("PRE-SAVE: Salt generated, hashing password...");
   this.password = await bcrypt.hash(this.password, salt);
-  next();
+  console.log("PRE-SAVE: Password hashed successfully");
 });
 
 // Instance method to compare the entered password with the hashed password in the database

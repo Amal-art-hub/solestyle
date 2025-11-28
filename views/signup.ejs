@@ -1,65 +1,151 @@
 <%- include('./partials/header', { title: title }) %>
 
-<div class="signup-page">
-    <div class="signup-box">
-        <h1>Create Your Account</h1>
-        <p class="subtitle">Sign up for faster checkout, order tracking, and exclusive deals.</p>
+    <div class="signup-page">
+        <div class="signup-box">
+            <h1>Create Your Account</h1>
+            <p class="subtitle">Sign up for faster checkout, order tracking, and exclusive deals.</p>
 
-        <div class="social-login">
-            <button class="google-btn">
-                <img src="/google-icon.png" alt="Google"> Sign up with Google
-            </button>
-            <button class="facebook-btn">
-                <img src="/facebook-icon.png" alt="Facebook"> Sign up with Facebook
-            </button>
+            <div class="social-login">
+                <button class="google-btn">
+                    <img src="/google-icon.png" alt="Google"> Sign up with Google
+                </button>
+                <button class="facebook-btn">
+                    <img src="/facebook-icon.png" alt="Facebook"> Sign up with Facebook
+                </button>
+            </div>
+            <div class="separator">OR</div>
+
+            <form id="signupForm" action="/api/auth/register" method="POST" class="auth-form">
+
+                <% if (error) { %>
+                    <p class="error-message">
+                        <%= error %>
+                    </p>
+                    <% } %>
+
+                        <div class="name-fields">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" name="name" placeholder="Enter your first name"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" placeholder="Enter your last name">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <div class="password-field">
+                                <input type="password" id="password" name="password" required>
+                                <button type="button" class="password-toggle" id="passwordToggle" aria-label="Show password">👁️</button>
+                            </div>
+                            <span class="password-hint">8+ characters, 1 uppercase, 1 number.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <div class="password-field">
+                                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                                <button type="button" class="password-toggle" id="confirmPasswordToggle" aria-label="Show confirm password">👁️</button>
+                            </div>
+                        </div>
+
+                        <div class="terms">
+                            <input type="checkbox" id="agree" required>
+                            <label for="agree">I agree to this <a href="#">Terms & Conditions</a> and <a
+                                    href="#">Privacy Policy</a></label>
+                        </div>
+
+                        <button type="submit" class="create-account-btn">Create Account</button>
+            </form>
+
+            <p class="login-prompt">
+                Already have an account? <a href="/login">Log in</a>
+            </p>
         </div>
-        <div class="separator">OR</div>
-
-        <form action="/api/auth/register" method="POST" class="auth-form">
-            
-            <% if (error) { %>
-                <p class="error-message"><%= error %></p>
-            <% } %>
-
-            <div class="name-fields">
-                <div class="form-group">
-                    <label for="firstName">First Name</label>
-                    <input type="text" id="firstName" name="name" placeholder="Enter your first name" required>
-                </div>
-                <div class="form-group">
-                    <label for="lastName">Last Name</label>
-                    <input type="text" id="lastName" name="lastName" placeholder="Enter your last name">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" placeholder="you@example.com" required>
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-                <span class="password-hint">8+ characters, 1 uppercase, 1 number.</span>
-            </div>
-
-            <div class="form-group">
-                <label for="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" required>
-            </div>
-            
-            <div class="terms">
-                <input type="checkbox" id="agree" required>
-                <label for="agree">I agree to this <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a></label>
-            </div>
-
-            <button type="submit" class="create-account-btn">Create Account</button>
-        </form>
-
-        <p class="login-prompt">
-            Already have an account? <a href="/login">Log in</a>
-        </p>
     </div>
-</div>
 
-<%- include('./partials/footer') %>
+    <script>
+        // Password visibility toggles
+        (function() {
+            const pwdToggle = document.getElementById('passwordToggle');
+            const pwdInput = document.getElementById('password');
+            const confirmToggle = document.getElementById('confirmPasswordToggle');
+            const confirmInput = document.getElementById('confirmPassword');
+
+            if (pwdToggle && pwdInput) {
+                pwdToggle.addEventListener('click', () => {
+                    if (pwdInput.type === 'password') {
+                        pwdInput.type = 'text';
+                        pwdToggle.textContent = '🙈';
+                    } else {
+                        pwdInput.type = 'password';
+                        pwdToggle.textContent = '👁️';
+                    }
+                });
+            }
+
+            if (confirmToggle && confirmInput) {
+                confirmToggle.addEventListener('click', () => {
+                    if (confirmInput.type === 'password') {
+                        confirmInput.type = 'text';
+                        confirmToggle.textContent = '🙈';
+                    } else {
+                        confirmInput.type = 'password';
+                        confirmToggle.textContent = '👁️';
+                    }
+                });
+            }
+        })();
+
+        document.getElementById('signupForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            console.log("Form data:", data);
+
+            // Basic client-side validation (optional, but good UX)
+            if (data.password !== data.confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+
+            try {
+                console.log("Sending request to /api/auth/register");
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                console.log("Response received:", response);
+
+                const result = await response.json();
+                console.log("Result:", result);
+
+                if (response.ok) {
+                    console.log("Success! Redirecting to verify page...");
+                    // Success: Redirect to verify page with email
+                    window.location.href = `/verify?email=${encodeURIComponent(data.email)}`;
+                } else {
+                    // Error: Show error message
+                    alert(result.message || 'Registration failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+    </script>
+
+    <%- include('./partials/footer') %>

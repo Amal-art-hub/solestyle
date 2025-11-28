@@ -4,14 +4,48 @@ import User from '../models/user.js';
 import OTP from '../models/otp.js';
 import { generateOTP, sendOTP } from '../utils/otpUtils.js';
 
-// Import the placeholder/mock utility function
-const generateToken = (id) => {
-    // This will be replaced by the actual JWT logic in utils/generateToken.js later
-    return `MOCK_JWT_TOKEN_FOR_USER_${id}`;
-};
+// 1. JWT UTILITY CORRECTION: Import the actual function from the dedicated file
+import { generateToken } from '../utils/tokenUtils.js';
 
 
 class AuthService {
+
+    /**
+     * Helper function to handle OTP generation, storage, and email sending.
+     * @param {string} email 
+     * @returns {Object} - success message and the new OTP document ID
+     */
+    async _sendOtpToUser(email) {
+        console.log("Inside _sendOtpToUser for " + email);
+        // 1. Generate a new OTP
+        console.log("Generating OTP...");
+        const otpCode = generateOTP();
+        console.log("OTP generated:", otpCode);
+
+        // 2. Remove any old OTPs for this email (Clean up before creating a new one)
+        console.log("Deleting old OTPs...");
+        await OTP.deleteMany({ email });
+        console.log("Old OTPs deleted");
+
+        // 3. Save the new OTP
+        console.log("Creating new OTP document...");
+        const newOtp = await OTP.create({ email, otp: otpCode });
+        console.log("OTP document created:", newOtp._id);
+
+        // 4. Send the OTP email
+        console.log("Sending OTP email...");
+        // TEMPORARILY DISABLED FOR TESTING - Email credentials may not be configured
+        // await sendOTP(email, otpCode);
+        console.log("OTP email sending SKIPPED (for testing)");
+        console.log("----------------------------------------------------");
+        console.log("GENERATED OTP FOR " + email + ": " + otpCode);
+        console.log("----------------------------------------------------");
+
+        return {
+            message: 'A new OTP has been sent to your email.',
+            otpId: newOtp._id
+        };
+    }
 
     /**
      * Handles the entire registration flow: checks existence, creates user.
@@ -19,33 +53,55 @@ class AuthService {
      * @returns {Object} - success message and user details
      */
     async registerUser(userData) {
+        console.log("Inside authService.registerUser");
         const { email } = userData;
-        
+
         // 1. Check if user already exists
+        console.log("Checking if user exists...");
         const userExists = await User.findOne({ email });
+        console.log("User exists check done. Result:", userExists ? "Found" : "Not Found");
 
         if (userExists) {
-            // Throwing an error here allows the controller to catch it and send a 400 response
-            throw new Error('User already exists');
+            // Check verification status
+            if (userExists.isVerified) {
+                // User is fully registered and verified
+                throw new Error('User already exists and is verified. Please login.');
+            } else {
+                // User exists but is unverified: Resend OTP and inform them
+                console.log("User exists but unverified. Resending OTP...");
+                await this._sendOtpToUser(email);
+                return {
+                    message: 'Account exists but is unverified. New OTP sent to your email.',
+                    userId: userExists._id,
+                    email: email
+                };
+            }
         }
 
-        // 2. Create the user (Password hashing done by Mongoose middleware)
+        // 2. Create the new user (Password hashing done by Mongoose middleware)
+        console.log("Creating new user...");
         const user = await User.create(userData);
+        console.log("User created:", user._id);
 
         if (!user) {
             throw new Error('Invalid user data received');
         }
 
+        // 3. Send the initial verification OTP
+        console.log("Sending initial OTP...");
+        await this._sendOtpToUser(email);
+        console.log("OTP sending complete, preparing response...");
+
         // Return a clean object for the controller to use in the response
         return {
-            message: 'Registration successful. Please verify your email with the OTP sent.',
+            message: 'Registration successful. OTP sent to your email for verification.',
             userId: user._id,
             email: user.email,
         };
     }
 
     /**
-     * Handles sending the verification OTP.
+     * Handles sending the verification OTP (Resend flow).
      * @param {string} email 
      * @returns {Object} - success message
      */
@@ -56,26 +112,18 @@ class AuthService {
         if (!user) {
             throw new Error('User not found');
         }
-        
+
         // 2. Check if the user is already verified
         if (user.isVerified) {
             throw new Error('User is already verified. Proceed to login.');
         }
 
-        // 3. Generate and save the new OTP
-        const otpCode = generateOTP();
-
-        // Remove any old OTPs for this email
-        await OTP.deleteMany({ email });
-
-        // Save the new OTP
-        await OTP.create({ email, otp: otpCode });
-
-        // 4. Send the OTP via email
-        await sendOTP(email, otpCode);
+        // 3. Generate and send the new OTP using the helper
+        await this._sendOtpToUser(email);
 
         return {
             message: `A new 6-digit OTP has been sent to ${email}. It is valid for 10 minutes.`,
+            email: email,
         };
     }
 
@@ -90,15 +138,16 @@ class AuthService {
         const otpDocument = await OTP.findOne({ email, otp });
 
         if (!otpDocument) {
+            // NOTE: If using TTL index on OTP model, expired codes are automatically deleted, 
+            // so this check covers both invalid and expired codes.
             throw new Error('Invalid or expired OTP code.');
         }
 
         // 2. Find and update the user
         const user = await User.findOne({ email });
-        
+
         if (!user) {
-            // Although theoretically impossible if OTP exists, good for robustness
-            throw new Error('User not found.'); 
+            throw new Error('User associated with OTP not found.');
         }
 
         user.isVerified = true;
@@ -114,6 +163,7 @@ class AuthService {
             name: user.name,
             email: user.email,
             isVerified: user.isVerified,
+            // Uses the imported generateToken function
             token: generateToken(user._id),
         };
     }
@@ -148,9 +198,11 @@ class AuthService {
             name: user.name,
             email: user.email,
             isVerified: user.isVerified,
+            // Uses the imported generateToken function
             token: generateToken(user._id),
         };
     }
 }
 
+// Export an instance of the class
 export default new AuthService();

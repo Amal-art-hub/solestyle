@@ -15,11 +15,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // 1. Gather form data from the HTML form fields
             const formData = new FormData(form);
-            // This 'data' object contains the raw form inputs (firstName, lastName, email, etc.)
+            // This 'data' object contains the raw form inputs
             const data = Object.fromEntries(formData.entries());
 
             // --- CRITICAL STEP: COMBINE NAMES TO MATCH Mongoose Model ---
-            // Your Mongoose model requires a single 'name' field.
             const fullName = `${data.firstName || ""} ${data.lastName || ""}`.trim();
 
             const finalPayload = {
@@ -30,10 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 email: data.email,
                 password: data.password,
 
-                // 3. Include optional fields if they exist in your form
+                // 3. Include optional fields
                 phone: data.phone || "",
-                
-                // We do NOT send confirmPassword to the backend.
             };
             // -----------------------------------------------------------
 
@@ -49,28 +46,43 @@ document.addEventListener("DOMContentLoaded", () => {
             messageContainer.className = "feedback-message success-message";
 
             try {
-                // 4. Use Axios to send the request asynchronously.
-                // NOTE: We send the CLEANED finalPayload, NOT the original data.
-                const response = await axios.post(API_URL + "/register", finalPayload);
+                // 4. Use fetch API to send the request asynchronously (converted from Axios)
+                const response = await fetch(API_URL + "/register", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(finalPayload),
+                });
+                
+                const responseData = await response.json(); // Get the JSON response body
 
-                // 5. Handle success response
-                messageContainer.textContent =
-                    response.data.message ||
-                    "Registration successful! Proceeding to OTP verification...";
-                messageContainer.className = "feedback-message success-message";
+                if (response.ok) {
+                    // 5. Handle success response
+                    messageContainer.textContent =
+                        responseData.message ||
+                        "Registration successful! Proceeding to OTP verification...";
+                    messageContainer.className = "feedback-message success-message";
 
-                // Redirect after a short delay (Prepare for the OTP verification page)
-                setTimeout(() => {
-                    // For now, redirect to login, but this will become /verify-otp later
-                    window.location.href = "/login";
-                }, 2000);
+                    // Redirect after a short delay (Prepare for the OTP verification page)
+                    setTimeout(() => {
+                        // --- CORRECT REDIRECT: Use the email from the API response to redirect to /verify ---
+                        // The server response includes the email necessary for the verification page
+                        const emailToVerify = responseData.email; 
+                        window.location.href = `/verify?email=${emailToVerify}`;
+                    }, 2000);
+                    
+                } else {
+                    // 6. Handle errors (e.g., 400 Bad Request, User already exists)
+                    // The errorMiddleware returns JSON with a 'message' field
+                    const errorMessage = responseData.message || "A server error occurred.";
+
+                    messageContainer.textContent = errorMessage;
+                    messageContainer.className = "feedback-message error-message";
+                }
                 
             } catch (error) {
-                // 6. Handle errors (e.g., 400 Bad Request, User already exists)
-                const errorMessage =
-                    error.response?.data?.message || "A network error occurred.";
-
-                messageContainer.textContent = errorMessage;
+                // 7. Handle network errors
+                console.error("Fetch error:", error);
+                messageContainer.textContent = "A network error occurred. Please check your connection.";
                 messageContainer.className = "feedback-message error-message";
             }
         });
