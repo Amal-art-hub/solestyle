@@ -27,23 +27,19 @@ class AuthService {
         await OTP.deleteMany({ email });
         console.log("Old OTPs deleted");
 
-        // 3. Save the new OTP
+        // 3. Create a new OTP document
         console.log("Creating new OTP document...");
-        const newOtp = await OTP.create({ email, otp: otpCode });
-        console.log("OTP document created:", newOtp._id);
+        const newOTP = await OTP.create({ email, otp: otpCode });
+        console.log("OTP document created:", newOTP._id);
 
-        // 4. Send the OTP email
+        // 4. Send the OTP via email
         console.log("Sending OTP email...");
-        // TEMPORARILY DISABLED FOR TESTING - Email credentials may not be configured
-        // await sendOTP(email, otpCode);
-        console.log("OTP email sending SKIPPED (for testing)");
-        console.log("----------------------------------------------------");
-        console.log("GENERATED OTP FOR " + email + ": " + otpCode);
-        console.log("----------------------------------------------------");
+        await sendOTP(email, otpCode);
+        console.log("OTP email sent successfully");
 
         return {
-            message: 'A new OTP has been sent to your email.',
-            otpId: newOtp._id
+            message: 'OTP sent successfully',
+            otpId: newOTP._id
         };
     }
 
